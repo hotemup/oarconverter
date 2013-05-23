@@ -536,18 +536,17 @@
 									}
 									else
 									{
-										console.log(data[i].ProfileShape);
 										continue;
 									}
-									console.log(i);
+									var color = getColor(data[i]);
 									var materials = [];
-									materials.push(new THREE.MeshBasicMaterial( {color: 0xffffff, map: getTexture(data[i].TextureEntry[5],file.name.split(".")[0])}));
-									materials.push(new THREE.MeshBasicMaterial( {color: 0xffffff, map: getTexture(data[i].TextureEntry[3],file.name.split(".")[0])}));
-									materials.push(new THREE.MeshBasicMaterial( {color: 0xffffff, map: getTexture(data[i].TextureEntry[4],file.name.split(".")[0])}));
-									materials.push(new THREE.MeshBasicMaterial( {color: 0xffffff, map: getTexture(data[i].TextureEntry[6],file.name.split(".")[0])}));
-									materials.push(new THREE.MeshBasicMaterial( {color: 0xffffff, map: getTexture(data[i].TextureEntry[7],file.name.split(".")[0])}));
-									materials.push(new THREE.MeshBasicMaterial( {color: 0xffffff, map: getTexture(data[i].TextureEntry[0],file.name.split(".")[0])}));
 									var cube = new THREE.Mesh(geo, new THREE.MeshFaceMaterial(materials));
+									materials.push(new THREE.MeshBasicMaterial( {color: color, map: getTexture(data[i].TextureEntry[5],file.name.split(".")[0])}));
+									materials.push(new THREE.MeshBasicMaterial( {color: color, map: getTexture(data[i].TextureEntry[3],file.name.split(".")[0])}));
+									materials.push(new THREE.MeshBasicMaterial( {color: color, map: getTexture(data[i].TextureEntry[4],file.name.split(".")[0])}));
+									materials.push(new THREE.MeshBasicMaterial( {color: color, map: getTexture(data[i].TextureEntry[6],file.name.split(".")[0])}));
+									materials.push(new THREE.MeshBasicMaterial( {color: color, map: getTexture(data[i].TextureEntry[7],file.name.split(".")[0])}));
+									materials.push(new THREE.MeshBasicMaterial( {color: color, map: getTexture(data[i].TextureEntry[0],file.name.split(".")[0])}));
 									cube.position.x=data[i].GroupPosition.X-0;
 									cube.position.y=data[i].GroupPosition.Y-0;
 									cube.position.z=data[i].GroupPosition.Z-0;
@@ -585,14 +584,16 @@
 										console.log(data[i].ProfileShape);
 										continue;
 									}
-									console.log(i);
+									var color = getColor(data[i]);
 									var materials = [];
-									for(var j=0; j<6; j++)
-									{
-										var texture = THREE.ImageUtils.loadTexture(getMaterialPath(data[i].TextureEntry[j],file.name.split(".")[0]));
-										materials.push(new THREE.MeshBasicMaterial( {color: 0xffffff,  map: texture}));
-									}
+									materials.push(new THREE.MeshBasicMaterial( {color: color, map: getTexture(data[i].TextureEntry[5],file.name.split(".")[0])}));
+									materials.push(new THREE.MeshBasicMaterial( {color: color, map: getTexture(data[i].TextureEntry[3],file.name.split(".")[0])}));
+									materials.push(new THREE.MeshBasicMaterial( {color: color, map: getTexture(data[i].TextureEntry[4],file.name.split(".")[0])}));
+									materials.push(new THREE.MeshBasicMaterial( {color: color, map: getTexture(data[i].TextureEntry[6],file.name.split(".")[0])}));
+									materials.push(new THREE.MeshBasicMaterial( {color: color, map: getTexture(data[i].TextureEntry[7],file.name.split(".")[0])}));
+									materials.push(new THREE.MeshBasicMaterial( {color: color, map: getTexture(data[i].TextureEntry[0],file.name.split(".")[0])}));
 									var cube = new THREE.Mesh(geo, new THREE.MeshFaceMaterial(materials));
+									}
 									cube.position.x=data[i].GroupPosition.X-0;
 									cube.position.y=data[i].GroupPosition.Y-0;
 									cube.position.z=data[i].GroupPosition.Z-0;
@@ -679,6 +680,12 @@
 				{
 					return textures[textureNames.indexOf(material)];
 				}
+			}
+			
+			function getColor(data)
+			{
+				//color values come in inverted so we do 255-color instead of color
+				return (255-data.Color.R)*65536+(255-data.Color.G)*256+(255-data.Color.B)*1;
 			}
 			
 			function getMaterialPath(material, file) {
